@@ -139,7 +139,7 @@ public class ArrayBase {
 		fillArray(arrays1m[19], 100, true);
 		*/
 		// fill test array
-		arrayTest[0] = new int[100];
+		arrayTest[0] = new int[10];
 		arrayTest[1] = new int[100];
 		arrayTest[2] = new int[100];
 		arrayTest[3] = new int[100];
@@ -155,14 +155,14 @@ public class ArrayBase {
 		fillArray(arrayTest[5], 99, false);
 		fillArray(arrayTest[6], 99.7, false);
 		fillArray(arrayTest[7], 100, true);
-		displayArray(arrayTest[0], "0%");
-		displayArray(arrayTest[1], "25%");
-		displayArray(arrayTest[2], "50%");
-		displayArray(arrayTest[3], "75%");
-		displayArray(arrayTest[4], "95%");
-		displayArray(arrayTest[5], "99%");
-		displayArray(arrayTest[6], "99.7%");
-		displayArray(arrayTest[7], "100%, inv");
+	}
+	
+	public int[] getArrayTest(int n) {
+		return arrayTest[n];
+	}
+	
+	public void setArrayTest(int n, int[] array) {
+		arrayTest[n] = array;
 	}
 
 	private void fillArray(int[] array, double sortedPercentage, boolean maxToMin) {
