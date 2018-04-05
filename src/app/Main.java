@@ -1,7 +1,6 @@
 package app;
 
-
-import algorithms.Algorithms;
+import algorithms.Quick;
 import data.ArrayBase;
 
 public class Main {
@@ -20,7 +19,7 @@ public class Main {
 		base1.displayArray(base1.getArrayTest(7), "100%, inv");*/
 		
 		// sort
-		//Algorithms.quickSort(base1.getArrayTest(0), 1, 5);
+		Quick.sort(base1.getArrayTest(0), 0, base1.getArrayTest(0).length-1);
 		
 		// display
 		base1.displayArray(base1.getArrayTest(0), "0%");
