@@ -1,5 +1,11 @@
 package algorithms;
 
+/*
+ * TASKS
+ * [ ] set some methods private
+ * [ ] change methods order
+ */
+
 public class Quick {
 
 	public static void swap(int[] array, int i, int j) {
@@ -33,15 +39,21 @@ public class Quick {
 		return left;
 	}
 
-	public static void sort(int[] array, int left, int r) {
-		int index = partition(array, left, r);
+	private static void sort(int[] array, int left, int right) {
+		int index = partition(array, left, right);
 
 		if (left < index-1) {
 			sort(array, left, index-1);
 		}
-		if (index < r) {
-			sort(array, index, r);
+		if (index < right) {
+			sort(array, index, right);
 		}
+	}
+	
+	public static void sort(int[] array) {
+		int left = 0;
+		int right = array.length-1;
+		sort(array, left, right);
 	}
 
 }
