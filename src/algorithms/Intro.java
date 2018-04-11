@@ -45,7 +45,7 @@ public class Intro {
 		}
 	}
 	
-	public static int partition(int[] array, int left, int right) {
+	private static int partition(int[] array, int left, int right) {
 		int pivot = array[(left + right) / 2];
 
 		while (left <= right) {
@@ -66,7 +66,8 @@ public class Intro {
 		return left;
 	}
 	
-	public static void swap(int[] array, int i, int j) {
+	// - utility method: swap two elements in array -
+	private static void swap(int[] array, int i, int j) {
 		int temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
