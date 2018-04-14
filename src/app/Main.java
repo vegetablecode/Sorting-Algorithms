@@ -1,38 +1,31 @@
 package app;
 
-import algorithms.Intro;
-import algorithms.Merge;
-import algorithms.Quick;
-import data.ArrayBase;
+import java.io.IOException;
 
-public class Main {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
-	public static void main(String[] args) {
+
+public class Main extends Application {
+
+    public static void main(String[] args) throws IOException{
+        launch(args);
+    }
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/MainWindow.fxml"));
 		
-		// ----- TEST ARRAYS PART ----- //
-		// - create dbs -
-		ArrayBase base1 = new ArrayBase();
-		ArrayBase base2 = base1;
-		ArrayBase base3 = base1;
+		Pane pane = loader.load();
+		Scene scene = new Scene(pane, 800, 600);
 		
-		// - display the arrays before sorting -
-		base1.displayArray(base1.getArrayTest(0), "1:0%");
-		base2.displayArray(base1.getArrayTest(0), "2:0%");
-		base3.displayArray(base1.getArrayTest(0), "3:0%");
-		
-		// - sort arrays -
-		Quick.sort(base1.getArrayTest(0));
-		Merge.sort(base2.getArrayTest(0));
-		Intro.sort(base3.getArrayTest(0));
-		
-		
-		// - display sorted arrays -
-		base1.displayArray(base1.getArrayTest(0), "1:0%");
-		base2.displayArray(base1.getArrayTest(0), "2:0%");
-		base3.displayArray(base1.getArrayTest(0), "3:0%");
-		
-		// ----- BIG ARRAYS PART ----- //
-		
+		primaryStage.setResizable(false);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Sorting Algorithms");
+		primaryStage.show();
 	}
-
+    
 }
