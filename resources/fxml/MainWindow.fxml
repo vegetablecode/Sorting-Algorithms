@@ -65,9 +65,9 @@
       <Separator layoutX="368.0" layoutY="38.0" prefHeight="5.0" prefWidth="399.0" />
       <Label layoutX="368.0" layoutY="60.0" prefHeight="17.0" prefWidth="166.0" text="unsorted items (max. 100):" />
       <Label layoutX="368.0" layoutY="143.0" prefHeight="17.0" prefWidth="166.0" text="sorted items (max. 100):" />
-      <TextArea fx:id="sortedTextArea" layoutX="368.0" layoutY="161.0" prefHeight="43.0" prefWidth="399.0" />
-      <TextArea fx:id="unsortedTextArea" layoutX="368.0" layoutY="78.0" prefHeight="43.0" prefWidth="399.0" />
-      <BarChart layoutX="344.0" layoutY="256.0" prefHeight="333.0" prefWidth="430.0">
+      <TextArea fx:id="sortedMergeTextArea" layoutX="368.0" layoutY="163.0" prefHeight="27.0" prefWidth="399.0" />
+      <TextArea fx:id="unsortedTextArea" layoutX="368.0" layoutY="80.0" prefHeight="27.0" prefWidth="399.0" />
+      <BarChart layoutX="344.0" layoutY="372.0" prefHeight="217.0" prefWidth="430.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -75,11 +75,16 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <Label layoutX="516.0" layoutY="220.0" prefHeight="27.0" prefWidth="96.0" text="Statistics">
+      <Label layoutX="519.0" layoutY="342.0" prefHeight="27.0" prefWidth="96.0" text="Statistics">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Separator layoutX="365.0" layoutY="243.0" prefHeight="5.0" prefWidth="399.0" />
+      <Separator layoutX="368.0" layoutY="365.0" prefHeight="5.0" prefWidth="399.0" />
+      <TextArea fx:id="sortedQuickTextArea" layoutX="368.0" layoutY="223.0" prefHeight="43.0" prefWidth="399.0" />
+      <TextArea fx:id="sortedIntroTextArea" layoutX="368.0" layoutY="282.0" prefHeight="43.0" prefWidth="399.0" />
+      <Label layoutX="726.0" layoutY="147.0" prefHeight="17.0" prefWidth="42.0" text="merge" />
+      <Label layoutX="733.0" layoutY="206.0" prefHeight="17.0" prefWidth="35.0" text="quick" />
+      <Label layoutX="738.0" layoutY="267.0" prefHeight="17.0" prefWidth="35.0" text="intro" />
    </children>
 </Pane>

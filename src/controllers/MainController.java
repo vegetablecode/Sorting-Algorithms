@@ -52,7 +52,11 @@ public class MainController {
 	@FXML
 	private Label introTimerLabel;
 	@FXML
-	private TextArea sortedTextArea;
+	private TextArea sortedMergeTextArea;
+	@FXML
+	private TextArea sortedQuickTextArea;
+	@FXML
+	private TextArea sortedIntroTextArea;
 	@FXML
 	private TextArea unsortedTextArea;
 
@@ -159,14 +163,19 @@ public class MainController {
 			Quick.sort(quickArray);
 			finishTime[1] = System.nanoTime();
 			quickTimer = (finishTime[1] - startTime[1])/1000000;
-			sortedTextArea.setText(ArrayUtil.arrayToString(quickArray));		
+
 			// intro sort
 			startTime[2] = System.nanoTime();
 			Intro.sort(introArray);
 			finishTime[2] = System.nanoTime();
 			introTimer = (finishTime[2] - startTime[2])/1000000;
 			
+			// display sorted arrays
+			sortedMergeTextArea.setText(ArrayUtil.arrayToString(mergeArray));		
+			sortedQuickTextArea.setText(ArrayUtil.arrayToString(quickArray));		
+			sortedIntroTextArea.setText(ArrayUtil.arrayToString(introArray));		
 			
+			// display times
 			displayTime();
 		}
 	}
