@@ -1,5 +1,8 @@
 package controllers;
 
+import algorithms.Intro;
+import algorithms.Merge;
+import algorithms.Quick;
 import data.ArrayUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -22,6 +25,9 @@ public class MainController {
 	private int[] mergeArray;
 	private int[] quickArray;
 	private int[] introArray;
+	
+	// - util values -
+	private Boolean isArrayLoaded;
 
 	@FXML
 	private TextField numbOfElemField;
@@ -60,6 +66,7 @@ public class MainController {
 		mergeTimer = 0;
 		quickTimer = 0;
 		introTimer = 0;
+		isArrayLoaded = false;
 
 		// view setup
 		clearFields();
@@ -104,8 +111,7 @@ public class MainController {
 		// get max random number
 		int tempMax = 0;
 		if (maxRandNumbField.getText().isEmpty()) {
-			showMessage("Cannot add the node. There is no value entered.");
-			isGood = false;
+			maxRandNumb = 500000000;
 		} else {
 			try {
 				tempMax = Integer.parseInt(maxRandNumbField.getText());
@@ -124,19 +130,45 @@ public class MainController {
 		// set arrays
 		if(isGood == true) {
 			mergeArray = ArrayUtil.fillArray(numbOfElements, sortedItemsPercent, highToLow, maxRandNumb);
-			quickArray = mergeArray;
-			introArray = mergeArray;
+			quickArray = new int[numbOfElements];
+			introArray = new int[numbOfElements];
+			System.arraycopy(mergeArray, 0, quickArray, 0, mergeArray.length);
+			System.arraycopy(mergeArray, 0, introArray, 0, mergeArray.length);
 			
 			// display loaded array
 			unsortedTextArea.setText(ArrayUtil.arrayToString(mergeArray));
 			setLabels();
-			clearFields();
+			isArrayLoaded = true;
 		}
 	}
 
 	@FXML
 	public void sortArray() {
-		System.out.println("sortArray");
+		if(isArrayLoaded == true) {
+			long[] startTime = new long[3];
+			long[] finishTime = new long[3];
+			
+			// merge sort
+			startTime[0] = System.nanoTime();
+			Merge.sort(mergeArray);
+			finishTime[0] = System.nanoTime();
+			mergeTimer = (finishTime[0] - startTime[0])/1000000;
+			
+			// quick sort
+			startTime[1] = System.nanoTime();
+			Quick.sort(quickArray);
+			finishTime[1] = System.nanoTime();
+			quickTimer = (finishTime[1] - startTime[1])/1000000;
+			sortedTextArea.setText(ArrayUtil.arrayToString(quickArray));		
+			// intro sort
+			startTime[2] = System.nanoTime();
+			Intro.sort(introArray);
+			finishTime[2] = System.nanoTime();
+			introTimer = (finishTime[2] - startTime[2])/1000000;
+			
+			
+			displayTime();
+		}
 	}
 
 	// - set all labels -
@@ -151,6 +183,13 @@ public class MainController {
 			highToLowLabel.setText("yes");
 		} else
 			highToLowLabel.setText("no");
+	}
+	
+	// - display time -
+	private void displayTime() {
+		mergeTimerLabel.setText(String.valueOf(mergeTimer));
+		introTimerLabel.setText(String.valueOf(introTimer));
+		quickTimerLabel.setText(String.valueOf(quickTimer));
 	}
 
 	// - clear fields -
