@@ -1,14 +1,28 @@
 package controllers;
 
+import data.ArrayUtil;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
+import javafx.scene.control.Alert.AlertType;
 
 public class MainController {
-	
+
+	// - model values -
+	private int numbOfElements;
+	private double sortedItemsPercent;
+	private int maxRandNumb;
+	private Boolean highToLow;
+	private double mergeTimer;
+	private double quickTimer;
+	private double introTimer;
+	private int[] mergeArray;
+	private int[] quickArray;
+	private int[] introArray;
+
 	@FXML
 	private TextField numbOfElemField;
 	@FXML
@@ -24,7 +38,7 @@ public class MainController {
 	@FXML
 	private Label maxRandNumbLabel;
 	@FXML
-	private Label hiwhToLowLabel;
+	private Label highToLowLabel;
 	@FXML
 	private Label mergeTimerLabel;
 	@FXML
@@ -35,21 +49,126 @@ public class MainController {
 	private TextArea sortedTextArea;
 	@FXML
 	private TextArea unsortedTextArea;
-	
-	
+
 	@FXML
 	void initialize() {
-		// nothing
+		// set default values
+		numbOfElements = 0;
+		sortedItemsPercent = 0;
+		maxRandNumb = 0;
+		highToLow = false;
+		mergeTimer = 0;
+		quickTimer = 0;
+		introTimer = 0;
+
+		// view setup
+		clearFields();
+		setLabels();
 	}
-	
+
 	@FXML
 	public void loadArray() {
-		System.out.println("loadArray");
+		
+		Boolean isGood = true;
+
+		// get number of elements
+		int tempSize = 0;
+		if (numbOfElemField.getText().isEmpty()) {
+			showMessage("Cannot add the node. There is no value entered.");
+			isGood = false;
+		} else {
+			try {
+				tempSize = Integer.parseInt(numbOfElemField.getText());
+				numbOfElements = tempSize;
+			} catch (NumberFormatException e) {
+				showMessage("The value should be a type of integer!");
+				isGood = false;
+			}
+		}
+
+		// get percentage of sorted items
+		double tempPercent = 0;
+		if (sortedItemsPercentField.getText().isEmpty()) {
+			showMessage("Cannot add the node. There is no value entered.");
+			isGood = false;
+		} else {
+			try {
+				tempPercent = Double.parseDouble(sortedItemsPercentField.getText());
+				sortedItemsPercent = tempPercent;
+			} catch (NumberFormatException e) {
+				showMessage("The value should be a type of double!");
+				isGood = false;
+			}
+		}
+		
+		// get max random number
+		int tempMax = 0;
+		if (maxRandNumbField.getText().isEmpty()) {
+			showMessage("Cannot add the node. There is no value entered.");
+			isGood = false;
+		} else {
+			try {
+				tempMax = Integer.parseInt(maxRandNumbField.getText());
+				maxRandNumb = tempMax;
+			} catch (NumberFormatException e) {
+				showMessage("The value should be a type of integer!");
+				isGood = false;
+			}
+		}
+		
+		// get high to low checkbox
+		if(highToLowCheckbox.isSelected()==true)
+			highToLow = true;
+		else highToLow = false;
+		
+		// set arrays
+		if(isGood == true) {
+			mergeArray = ArrayUtil.fillArray(numbOfElements, sortedItemsPercent, highToLow, maxRandNumb);
+			quickArray = mergeArray;
+			introArray = mergeArray;
+			
+			// display loaded array
+			unsortedTextArea.setText(ArrayUtil.arrayToString(mergeArray));
+			setLabels();
+			clearFields();
+		}
 	}
-	
+
 	@FXML
 	public void sortArray() {
 		System.out.println("sortArray");
+	}
+
+	// - set all labels -
+	private void setLabels() {
+		numbOfElemLabel.setText(Integer.toString(numbOfElements));
+		sortedItemsPercentLabel.setText(Double.toString(sortedItemsPercent));
+		maxRandNumbLabel.setText(Integer.toString(maxRandNumb));
+		mergeTimerLabel.setText(Double.toString(mergeTimer));
+		quickTimerLabel.setText(Double.toString(quickTimer));
+		introTimerLabel.setText(Double.toString(introTimer));
+		if (highToLow == true) {
+			highToLowLabel.setText("yes");
+		} else
+			highToLowLabel.setText("no");
+	}
+
+	// - clear fields -
+	private void clearFields() {
+		numbOfElemField.setText("");
+		maxRandNumbField.setText("");
+		sortedItemsPercentField.setText("");
+		numbOfElemField.setText("");
+		highToLowCheckbox.setSelected(false);
+	}
+
+	// - show error message -
+	public void showMessage(String message) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Warning Message");
+		alert.setHeaderText("Warning message");
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 
 }
