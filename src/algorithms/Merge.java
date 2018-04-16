@@ -1,47 +1,46 @@
 package algorithms;
 
 public class Merge {
-	
+
 	public static void sort(int[] array) {
-		int n = array.length;
-		if(n<2)
-			return;
-		int mid = n/2;
-		int[] left = new int[mid];
-		int[] right = new int[n-mid];
-		for(int i=0; i<mid; i++)
-			left[i] = array[i];
-		for(int i=mid; i<n; i++)
-			right[i-mid] = array[i];
-		sort(left);
-		sort(right);
-		merge(array, left, right);
+		sort(array, 0, array.length - 1);
 	}
-	
-	private static void merge(int[] array, int[] left, int[] right) {
-		int i=0, j=0, k=0;
-		int nLeft = left.length;
-		int nRight = right.length;
-		while((i<nLeft)&&(j<nRight)) {
-			if(left[i]<=right[j]) {
-				array[k] = left[i];
-				i++;
-			} else {
-				array[k] = left[i];
-				j++;
-			}
-			k++;
-		}
-		while(i<nLeft) {
-			array[k] = left[i];
-			i++;
-			k++;
-		}
-		while(j<nRight) {
-			array[k] = right[j];
-			j++;
-			k++;
+
+	private static void sort(int[] array, int left, int right) {
+		if (left < right) {
+			int middle = (left + right) / 2;
+			sort(array, left, middle);
+			sort(array, middle + 1, right);
+			merge(array, left, middle, right);
 		}
 	}
 
+	private static void merge(int[] array, int left, int middle, int right) {
+		int[] helper = new int[array.length];
+		for (int i = left; i <= right; i++) {
+			helper[i] = array[i];
+		}
+
+		int helperLeft = left;
+		int helperRight = middle + 1;
+		int current = left;
+
+		while (helperLeft <= middle && helperRight <= right) {
+			if (helper[helperLeft] <= helper[helperRight]) {
+				array[current] = helper[helperLeft];
+				helperLeft++;
+
+			} else {
+				array[current] = helper[helperRight];
+				helperRight++;
+			}
+			current++;
+		}
+
+		int remaining = middle - helperLeft;
+		for (int i = 0; i <= remaining; i++) {
+			array[current + i] = helper[helperLeft + i];
+		}
+
+	}
 }

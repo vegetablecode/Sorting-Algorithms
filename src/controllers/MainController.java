@@ -5,11 +5,16 @@ import algorithms.Merge;
 import algorithms.Quick;
 import data.ArrayUtil;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.control.Alert.AlertType;
 
 public class MainController {
@@ -29,6 +34,14 @@ public class MainController {
 	// - util values -
 	private Boolean isArrayLoaded;
 
+	@FXML
+	private BarChart <?,?> timeChart;
+	@FXML
+	private CategoryAxis methodAxis;
+	@FXML
+	private NumberAxis timeAxis;
+	@FXML
+	private Label statusLabel;
 	@FXML
 	private TextField numbOfElemField;
 	@FXML
@@ -75,6 +88,7 @@ public class MainController {
 		// view setup
 		clearFields();
 		setLabels();
+		setStatus("There's no array loaded.", 1);
 	}
 
 	@FXML
@@ -143,6 +157,9 @@ public class MainController {
 			unsortedTextArea.setText(ArrayUtil.arrayToString(mergeArray));
 			setLabels();
 			isArrayLoaded = true;
+			
+			// display status
+			setStatus("The array is loaded.", 0);
 		}
 	}
 
@@ -153,22 +170,25 @@ public class MainController {
 			long[] finishTime = new long[3];
 			
 			// merge sort
+			setStatus("Sorting with mergeSort...", 1);
 			startTime[0] = System.nanoTime();
 			Merge.sort(mergeArray);
 			finishTime[0] = System.nanoTime();
-			mergeTimer = (finishTime[0] - startTime[0])/1000000;
+			mergeTimer = (finishTime[0] - startTime[0])/1000000.00;
 			
 			// quick sort
+			setStatus("Sorting with quickSort...", 1);
 			startTime[1] = System.nanoTime();
 			Quick.sort(quickArray);
 			finishTime[1] = System.nanoTime();
-			quickTimer = (finishTime[1] - startTime[1])/1000000;
+			quickTimer = (finishTime[1] - startTime[1])/1000000.00;
 
 			// intro sort
+			setStatus("Sorting with introSort...", 1);
 			startTime[2] = System.nanoTime();
 			Intro.sort(introArray);
 			finishTime[2] = System.nanoTime();
-			introTimer = (finishTime[2] - startTime[2])/1000000;
+			introTimer = (finishTime[2] - startTime[2])/1000000.00;
 			
 			// display sorted arrays
 			sortedMergeTextArea.setText(ArrayUtil.arrayToString(mergeArray));		
@@ -177,6 +197,10 @@ public class MainController {
 			
 			// display times
 			displayTime();
+			
+			isArrayLoaded = false;
+			setStatus("Done.", 0);
+			updateBarChart();
 		}
 	}
 
@@ -217,6 +241,26 @@ public class MainController {
 		alert.setHeaderText("Warning message");
 		alert.setContentText(message);
 		alert.showAndWait();
+	}
+	
+	// - set status -
+	public void setStatus(String status, int colour) {
+		if(colour == 1)
+			statusLabel.setTextFill(Color.web("ff0000"));
+		if(colour == 0)
+			statusLabel.setTextFill(Color.web("006600"));
+		statusLabel.setText(status);
+	}
+	
+	// - update bar chart -
+	public void updateBarChart() {
+		timeChart.getData().clear();
+		timeChart.layout();
+		XYChart.Series times = new XYChart.Series<>();
+		times.getData().add(new XYChart.Data("Merge", mergeTimer));
+		times.getData().add(new XYChart.Data("Quick", quickTimer));
+		times.getData().add(new XYChart.Data("Intro", introTimer));
+		timeChart.getData().addAll(times);
 	}
 
 }
