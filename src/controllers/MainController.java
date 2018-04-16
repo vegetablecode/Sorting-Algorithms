@@ -33,6 +33,7 @@ public class MainController {
 	
 	// - util values -
 	private Boolean isArrayLoaded;
+	private int barCounter;
 
 	@FXML
 	private BarChart <?,?> timeChart;
@@ -84,6 +85,7 @@ public class MainController {
 		quickTimer = 0;
 		introTimer = 0;
 		isArrayLoaded = false;
+		barCounter = 0;
 
 		// view setup
 		clearFields();
@@ -203,6 +205,11 @@ public class MainController {
 			updateBarChart();
 		}
 	}
+	
+	@FXML
+	public void resetChart() {
+		timeChart.getData().clear();
+	}
 
 	// - set all labels -
 	private void setLabels() {
@@ -220,9 +227,9 @@ public class MainController {
 	
 	// - display time -
 	private void displayTime() {
-		mergeTimerLabel.setText(String.valueOf(mergeTimer));
-		introTimerLabel.setText(String.valueOf(introTimer));
-		quickTimerLabel.setText(String.valueOf(quickTimer));
+		mergeTimerLabel.setText(String.valueOf(mergeTimer) + " ms");
+		introTimerLabel.setText(String.valueOf(introTimer) + " ms");
+		quickTimerLabel.setText(String.valueOf(quickTimer) + " ms");
 	}
 
 	// - clear fields -
@@ -254,13 +261,17 @@ public class MainController {
 	
 	// - update bar chart -
 	public void updateBarChart() {
-		timeChart.getData().clear();
+		if(barCounter == 10) {
+			timeChart.getData().clear();
+			barCounter = 0;
+		}
 		timeChart.layout();
 		XYChart.Series times = new XYChart.Series<>();
 		times.getData().add(new XYChart.Data("Merge", mergeTimer));
 		times.getData().add(new XYChart.Data("Quick", quickTimer));
 		times.getData().add(new XYChart.Data("Intro", introTimer));
 		timeChart.getData().addAll(times);
+		barCounter++;
 	}
 
 }
