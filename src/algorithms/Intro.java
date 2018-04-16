@@ -2,33 +2,49 @@ package algorithms;
 
 public class Intro {
 
-	// [takes array and calculates the max depth]
 	public static void sort(int[] array) {
-		int depth = ((int) Math.log(array.length)) * 2;
-		sort(array, depth, 0, array.length - 1);
+		sort(array, 0, array.length);
 	}
 
-	// [chooses the right sorting method (quicksort or heapsort)]
-	private static void sort(int[] array, int depth, int left, int right) {
-		int length = array.length;
-		if (length <= 1)
+	// - calculates the depth -
+	public static void sort(int[] array, int left, int right) {
+		// calculate range
+		int range = right - left;
+		if (range < 2)
 			return;
-		else if (depth == 0)
-			heapSort(array, left, right);
-		else {
-			if (left >= right)
-				return;
-			int index = partition(array, left, right);
-			sort(array, depth - 1, left, index - 1);
-			sort(array, depth - 1, index, right);
-		}
+
+		// calculate depth
+		int depth = (int) (5 * Math.log(range) / Math.log(2.0)) / 3;
+		sort(array, left, right, depth);
 	}
 
+	// - the actual sort implementation -
+	private static void sort(int[] array, int left, int right, int depth) {
+		int range = right - left;
+
+		// there's nothing to sort
+		if (range < 2)
+			return;
+		// use heapsort if depth is 0
+		if (depth == 0) {
+			heapSort(array, left, right);
+			return;
+		}
+
+		// not deep enough - use quicksort
+		int index = partition(array, left, right);
+		sort(array, left, index, depth - 1);
+		sort(array, index + 1, right, depth - 1);
+	}
+
+	// heapsort algorithm
 	private static void heapSort(int[] array, int left, int right) {
 		for (int i = right / 2 - 1; i >= left; i--)
 			heapify(array, right, i);
 		for (int i = right - 1; i >= left; i--) {
-			swap(array, left, i);
+			int temp = array[left];
+			array[left] = array[i];
+			array[i] = temp;
 			heapify(array, i, left);
 		}
 	}
@@ -42,37 +58,30 @@ public class Intro {
 		if (r < n && array[r] > array[largest])
 			largest = r;
 		if (largest != i) {
-			swap(array, i, largest);
+			int swap = array[i];
+			array[i] = array[largest];
+			array[largest] = swap;
 			heapify(array, n, largest);
 		}
 	}
 
+	// divide array into two subarrays
 	private static int partition(int[] array, int left, int right) {
-		int pivot = array[(left + right) / 2];
+		int pivot = array[right - 1];
+		int i = left - 1;
 
-		while (left <= right) {
-			while (array[left] < pivot) {
-				left++;
-			}
-
-			while (array[right] > pivot) {
-				right--;
-			}
-
-			if (left <= right) {
-				swap(array, left, right);
-				left++;
-				right--;
+		for (int j = left; j < right - 1; ++j) {
+			if (array[j] <= pivot) {
+				int tmp = array[++i];
+				array[i] = array[j];
+				array[j] = tmp;
 			}
 		}
-		return left;
-	}
 
-	// - utility method: swap two elements in array -
-	private static void swap(int[] array, int i, int j) {
-		int temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
+		// swap
+		int tmp = array[++i];
+		array[i] = array[right - 1];
+		array[right - 1] = tmp;
+		return i;
 	}
-
 }
