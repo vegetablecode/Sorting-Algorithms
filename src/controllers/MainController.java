@@ -33,7 +33,6 @@ public class MainController {
 	
 	// - util values -
 	private Boolean isArrayLoaded;
-	private int barCounter;
 
 	@FXML
 	private BarChart <?,?> timeChart;
@@ -85,7 +84,6 @@ public class MainController {
 		quickTimer = 0;
 		introTimer = 0;
 		isArrayLoaded = false;
-		barCounter = 0;
 
 		// view setup
 		clearFields();
@@ -131,7 +129,7 @@ public class MainController {
 		// get max random number
 		int tempMax = 0;
 		if (maxRandNumbField.getText().isEmpty()) {
-			maxRandNumb = 500000000;
+			maxRandNumb = 1000000000;
 		} else {
 			try {
 				tempMax = Integer.parseInt(maxRandNumbField.getText());
@@ -261,17 +259,12 @@ public class MainController {
 	
 	// - update bar chart -
 	public void updateBarChart() {
-		if(barCounter == 10) {
-			timeChart.getData().clear();
-			barCounter = 0;
-		}
 		timeChart.layout();
 		XYChart.Series times = new XYChart.Series<>();
 		times.getData().add(new XYChart.Data("Merge", mergeTimer));
 		times.getData().add(new XYChart.Data("Quick", quickTimer));
 		times.getData().add(new XYChart.Data("Intro", introTimer));
 		timeChart.getData().addAll(times);
-		barCounter++;
 	}
 
 }
